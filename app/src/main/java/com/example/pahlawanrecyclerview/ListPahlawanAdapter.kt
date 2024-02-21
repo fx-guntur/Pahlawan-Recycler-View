@@ -1,26 +1,19 @@
 package com.example.pahlawanrecyclerview
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.pahlawanrecyclerview.databinding.ItemRowPahlawanBinding
 
 class ListPahlawanAdapter (private val listPahlawan: ArrayList<Pahlawan>) : RecyclerView.Adapter<ListPahlawanAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
-        val tvName: TextView = itemView.findViewById(R.id.tv_item_name)
-        val tvDescription: TextView = itemView.findViewById(R.id.tv_item_description)
-    }
+    class ListViewHolder(var binding: ItemRowPahlawanBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_row_pahlawan, parent, false)
-        return ListViewHolder(view)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
+        val binding = ItemRowPahlawanBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        return ListViewHolder(binding)
     }
 
     override fun getItemCount(): Int = listPahlawan.size
@@ -31,7 +24,7 @@ class ListPahlawanAdapter (private val listPahlawan: ArrayList<Pahlawan>) : Recy
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val (name, description, photo) = listPahlawan[position]
-        Glide.with(holder.itemView).load(photo).circleCrop().into(holder.imgPhoto)
+        Glide.with(holder.itemView).load(photo).circleCrop().into(holder.binding.imgItemPhoto)
         /* Kode di atas merupakan kode dasar untuk bisa menampilkan gambar dari URL ke dalam sebuah ImageView. Selain itu, Anda bisa
         menggunakan berbagai fungsi lainnya seperti berikut.
             circleCrop(), digunakan untuk membuat gambar menjadi lingkaran.
@@ -39,8 +32,8 @@ class ListPahlawanAdapter (private val listPahlawan: ArrayList<Pahlawan>) : Recy
             thumbnail, digunakan untuk menambahkan thumbnail atau gambar sebelum gambar dimuat.
             error, digunakan untuk menggantikan gambar yang gagal ketika dimuat.
         */
-        holder.tvName.text = name
-        holder.tvDescription.text = description
+        holder.binding.tvItemName.text = name
+        holder.binding.tvItemDescription.text = description
         holder.itemView.setOnClickListener {
             onItemClickCallback.onItemClicked(listPahlawan[holder.adapterPosition])
         }
