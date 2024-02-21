@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class ListPahlawanAdapter (private val listPahlawan: ArrayList<Pahlawan>) : RecyclerView.Adapter<ListPahlawanAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -30,7 +31,14 @@ class ListPahlawanAdapter (private val listPahlawan: ArrayList<Pahlawan>) : Recy
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val (name, description, photo) = listPahlawan[position]
-        holder.imgPhoto.setImageResource(photo)
+        Glide.with(holder.itemView).load(photo).circleCrop().into(holder.imgPhoto)
+        /* Kode di atas merupakan kode dasar untuk bisa menampilkan gambar dari URL ke dalam sebuah ImageView. Selain itu, Anda bisa
+        menggunakan berbagai fungsi lainnya seperti berikut.
+            circleCrop(), digunakan untuk membuat gambar menjadi lingkaran.
+            transition, digunakan untuk menambahkan transisi ketika gambar selesai dimuat.
+            thumbnail, digunakan untuk menambahkan thumbnail atau gambar sebelum gambar dimuat.
+            error, digunakan untuk menggantikan gambar yang gagal ketika dimuat.
+        */
         holder.tvName.text = name
         holder.tvDescription.text = description
         holder.itemView.setOnClickListener {
